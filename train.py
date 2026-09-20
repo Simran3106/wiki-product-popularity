@@ -42,22 +42,16 @@ df = df.dropna(subset=FEATURES + [TARGET])
 df = df[np.isfinite(df[FEATURES]).all(axis=1)]
 print(f"After cleaning: {len(df)} products")
 
-positive_features = [
+log_features = [
     "avg_views_pre","median_views_pre","max_views_pre","min_views_pre",
     "range_views_pre","volatility_pre","cv_pre","total_views_pre",
-    "avg_edits_pre","total_edits_pre","edit_view_ratio_pre"
-]
-
-signed_features = [
+    "avg_edits_pre","total_edits_pre","edit_view_ratio_pre",
     "growth_rate_pre","trend_slope_pre",
     "largest_jump_pre","largest_drop_pre",
     "acceleration_pre"
 ]
 
-for col in positive_features:
-    df[col] = np.log1p(df[col])
-
-for col in signed_features:
+for col in log_features:
     df[col] = np.sign(df[col]) * np.log1p(np.abs(df[col]))
 
 # Correlation heatmap
